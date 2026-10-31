@@ -1,36 +1,63 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# next-components-styling
 
-## Getting Started
+Laboratorio 11 de Desarrollo de Aplicaciones Web Avanzado: componentes reutilizables combinando **CSS Modules** y **Tailwind CSS** en Next.js (App Router, TypeScript, Turbopack).
 
-First, run the development server:
+Repositorio: https://github.com/JasonGomezzz/Lab11-DAWA.git
+
+## Requisitos
+
+- Node.js 18.18 o superior
+- npm
+
+## Instalación y ejecución
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+La demo está en http://localhost:3000/styling
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Otros scripts: `npm run build`, `npm run start`, `npm run lint`.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Estructura
 
-## Learn More
+```
+src/
+├── app/
+│   └── styling/page.tsx          # Página que reúne todos los componentes
+└── components/
+    ├── ui/
+    │   ├── Button.tsx            # Tailwind (tamaños) + CSS Module (onda, gradientes, spinner)
+    │   ├── Button.module.css
+    │   ├── Input.tsx             # Tailwind (estructura) + CSS Module (label flotante, shake)
+    │   ├── Input.module.css
+    │   └── Badge.tsx             # Solo Tailwind
+    └── cards/
+        └── Card.tsx              # Solo Tailwind
+```
 
-To learn more about Next.js, take a look at the following resources:
+## Componentes
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+| Componente | Variantes / props | Estilizado |
+|---|---|---|
+| `Button` | `primary`, `secondary`, `outline`; `sm`, `md`, `lg`; `loading`, `disabled`, `fullWidth` | CSS Modules + Tailwind |
+| `Badge` | `success`, `error`, `warning`, `info`, `neutral`; tres tamaños; `rounded` | Tailwind |
+| `Card` | `title`, `subtitle`, `image`, `footer`, `hover`, `className` | Tailwind |
+| `Input` | `label`, `type`, `error`, `helperText`, `icon`, `required`, `disabled` | CSS Modules + Tailwind |
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Cómo probar
 
-## Deploy on Vercel
+1. Abrir `/styling` y recorrer botones, badges y cards (hover con elevación y zoom de imagen).
+2. Pulsar "Click para cargar": muestra el spinner durante 2 s.
+3. Mantener pulsado cualquier botón para ver el efecto de onda.
+4. En el formulario, escribir un email sin `@` para ver el mensaje de error con animación.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Desviaciones respecto al enunciado
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- `next.config.ts`: la regla de Turbopack generada por `create-next-app` aplicaba el loader de Tailwind a todo `*.css`, lo que convertía los `*.module.css` en CSS global y dejaba `styles.button` como `undefined`. Se limitó a `globals.css`.
+- `page.tsx`: `bg-gradient-to-br` pasa a `bg-linear-to-br`, nombre vigente en Tailwind CSS v4.
+- `Input.tsx`: se agregó `"use client"` y se quitó el estado `isFocused`, que no se usaba.
+- `Card.tsx`: se desactiva la regla `no-img-element` en la imagen, porque la URL es externa.
+- Los archivos copiados del documento traían espacios no separables (U+00A0) que rompían el parser de CSS; se reemplazaron por espacios normales.
+- Se cambió el título de la aplicación en `layout.tsx`.
